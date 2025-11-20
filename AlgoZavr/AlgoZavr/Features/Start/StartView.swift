@@ -9,36 +9,36 @@ import SwiftUI
 
 struct StartView: View {
     @EnvironmentObject var appState: AppState
-
+    
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 40) {
-                Spacer()
+        VStack(spacing: 40) {
+            Spacer()
 
-                Text("Добро пожаловать в AlgoZavr!")
-                    .font(.system(size: 40, weight: .semibold))
-                    .multilineTextAlignment(.center)
+            Text("Добро пожаловать в AlgoZavr!")
+                .font(.system(size: 40, weight: .semibold))
+                .multilineTextAlignment(.center)
 
-                Spacer()
+            Spacer()
 
-                VStack(spacing: 0) {
-                    NavigationLink {
-                        LoginView()
-                    } label: {
-                        PrimaryButton(title: "Войти")
-                    }
-
-                    NavigationLink {
-                        RegisterView()
-                    } label: {
-                        SecondaryButton(title: "Зарегистрироваться")
-                    }
+            VStack(spacing: 0) {
+                NavigationLink {
+                    LoginView()
+                        .environmentObject(appState)
+                } label: {
+                    PrimaryButton(title: "Войти")
                 }
 
-                Spacer()
+                NavigationLink {
+                    RegisterView()
+                        .environmentObject(appState)
+                } label: {
+                    SecondaryButton(title: "Зарегистрироваться")
+                }
             }
-            .padding()
+
+            Spacer()
         }
+        .padding()
     }
 }
 

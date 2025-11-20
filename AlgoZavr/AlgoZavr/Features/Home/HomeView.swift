@@ -9,44 +9,33 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 32) {
-                
-                Spacer()
-                
-                VStack(spacing: 8) {
-                    Text("Изучай алгоритмы!")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
+        VStack(spacing: 32) {
+
+            Spacer()
+
+            Text("Изучай алгоритмы!")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+
+            Spacer()
+
+            VStack(spacing: 20) {
+                NavigationLink(destination: PlayView()) {
+                    PrimaryButton(title: "Играть")
                 }
 
-                Spacer()
-                
-                VStack(spacing: 20) {
-                    NavigationLink {
-                        Text("PlayView")
-                            .font(.title2)
-                            .navigationTitle("Играть")
-                    } label: {
-                        PrimaryButton(title: "Играть")
-                    }
-
-                    NavigationLink {
-                        TopicsListView()
-                    } label: {
-                        PrimaryButton(title: "Изучать алгоритмы")
-                    }
+                NavigationLink(destination: TopicsListView()) {
+                    PrimaryButton(title: "Изучать алгоритмы")
                 }
-
-                Spacer()
             }
-            .padding()
-            .navigationTitle("Главная")
+
+            Spacer()
         }
+        .padding()
+        .navigationTitle("Главная")
     }
 }
 
 #Preview {
     HomeView()
 }
-
