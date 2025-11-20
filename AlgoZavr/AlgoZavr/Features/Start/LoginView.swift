@@ -8,18 +8,47 @@
 import SwiftUI
 
 struct LoginView: View {
-    @EnvironmentObject var appState: AppState
-    
-    var body: some View {
-        VStack(spacing: 20) {
-            Text("Вход")
-                .font(.largeTitle)
-                .padding()
+    @State private var email = ""
+    @State private var password = ""
 
-            Button("Войти (заглушка)") {
-                appState.isAuthenticated = true
+    var body: some View {
+        ZStack {
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 24) {
+
+                    Text("Вход")
+                        .font(.system(size: 40, weight: .semibold))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal)
+
+
+                    VStack(spacing: 16) {
+                        GlassField(text: $email, placeholder: "Email")
+                        GlassField(text: $password, placeholder: "Пароль", isSecure: true)
+                    }
+                    .padding(.horizontal)
+                    
+                    NavigationLink {
+                        HomeView()
+                    } label: {
+                        PrimaryButton(title: "Войти")
+                            .padding(.horizontal)
+                    }
+
+                    Spacer()
+
+                    NavigationLink {
+                        RegisterView()
+                    } label: {
+                        SecondaryButton(title: "Создать аккаунт")
+                            .padding(.horizontal)
+                    }
+
+                    Spacer()
+                }
+                .padding(.top, 40)
             }
-            .padding()
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
