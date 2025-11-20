@@ -17,9 +17,7 @@ struct AlgorithmApp: App {
                 HomeView()
                     .environmentObject(appState)
             } else {
-//                LoginView()
-//                    .environmentObject(appState)
-                HomeView()
+                StartView()
                     .environmentObject(appState)
             }
         }
