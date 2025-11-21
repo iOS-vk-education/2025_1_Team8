@@ -25,7 +25,7 @@ struct MainTabView: View {
             }
             
             NavigationStack {
-                PlayView()
+                ProgressView()
             }
             .tabItem {
                 Label("Прогресс", systemImage: "chart.line.uptrend.xyaxis")

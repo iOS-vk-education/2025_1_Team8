@@ -22,7 +22,7 @@ struct LoginView: View {
                     .padding(.horizontal)
 
                 VStack(spacing: 16) {
-                    GlassField(text: $email, placeholder: "Email")
+                    GlassField(text: $email, placeholder: "Имя пользователя")
                     GlassField(text: $password, placeholder: "Пароль", isSecure: true)
                 }
                 .padding(.horizontal)
@@ -34,10 +34,9 @@ struct LoginView: View {
                         .padding(.horizontal)
                 }
 
-                Spacer()
-
                 NavigationLink {
                     RegisterView()
+                        .environmentObject(appState)
                 } label: {
                     SecondaryButton(title: "Создать аккаунт")
                         .padding(.horizontal)
@@ -45,8 +44,13 @@ struct LoginView: View {
 
                 Spacer()
             }
-            .padding(.top, 40)
+            .padding(.top, 20)
         }
         .ignoresSafeArea(.keyboard)
     }
+}
+
+#Preview {
+    LoginView()
+        .environmentObject(AppState())
 }

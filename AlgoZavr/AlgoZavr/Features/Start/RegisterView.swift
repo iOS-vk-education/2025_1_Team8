@@ -16,7 +16,7 @@ struct RegisterView: View {
 
     var body: some View {
         ScrollView(showsIndicators: false) {
-            VStack(spacing: 40) {
+            VStack(spacing: 20) {
 
                 Text("Регистрация")
                     .font(.system(size: 40, weight: .semibold))
@@ -40,8 +40,13 @@ struct RegisterView: View {
 
                 Spacer()
             }
-            .padding(.top, 40)
+            .padding(.top, 20)
         }
         .ignoresSafeArea(.keyboard)
     }
+}
+
+#Preview {
+    RegisterView()
+        .environmentObject(AppState())
 }
