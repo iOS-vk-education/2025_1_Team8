@@ -10,17 +10,17 @@ import SwiftUI
 @main
 struct AlgorithmApp: App {
     @StateObject private var appState = AppState()
-    
+
     var body: some Scene {
         WindowGroup {
             if appState.isAuthenticated {
-                HomeView()
+                MainTabView()
                     .environmentObject(appState)
             } else {
-//                LoginView()
-//                    .environmentObject(appState)
-                HomeView()
-                    .environmentObject(appState)
+                NavigationStack {
+                    StartView()
+                        .environmentObject(appState)
+                }
             }
         }
     }

@@ -12,12 +12,19 @@ struct PrimaryButton: View {
 
     var body: some View {
         Text(title)
-            .fontWeight(.semibold)
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color.accentColor)
+            .font(.system(size: 23, weight: .semibold))
             .foregroundColor(.white)
-            .cornerRadius(12)
-            .padding(.horizontal)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .background(
+                RoundedRectangle(cornerRadius: 14)
+                    .fill(Color.blue)
+            )
+            .shadow(
+                color: Color.black.opacity(0.25),
+                radius: 12,
+                x: 0,
+                y: 4
+            )
     }
 }
