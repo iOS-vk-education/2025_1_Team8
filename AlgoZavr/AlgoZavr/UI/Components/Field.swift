@@ -55,11 +55,11 @@ struct GlassField: View {
         }
         .frame(height: 44)
         .background(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: 14)
                 .fill(Color.gray.opacity(0.15))
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: 14)
                 .stroke(Color.black.opacity(0.1))
         )
         .shadow(color: .black.opacity(0.05), radius: 3)

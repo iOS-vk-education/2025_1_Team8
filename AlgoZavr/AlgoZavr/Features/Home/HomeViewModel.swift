@@ -6,7 +6,7 @@
 //
 
 import Foundation
-internal import Combine
+import Combine
 
 final class HomeViewModel: ObservableObject {
     @Published var username: String = ""
