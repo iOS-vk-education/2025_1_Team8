@@ -22,3 +22,7 @@ struct TopicsListView: View {
         }
     }
 }
+
+#Preview {
+    TopicsListView()
+}
