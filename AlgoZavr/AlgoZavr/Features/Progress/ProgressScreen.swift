@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct ProgressView: View {
+struct PregressScreen: View {
     var body: some View {
-        Text("ProgressView")
+        Text("PregressScreen")
     }
 }
