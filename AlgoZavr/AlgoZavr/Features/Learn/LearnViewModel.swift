@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Combine
+internal import Combine
 
 struct Topic: Identifiable {
     let id = UUID()

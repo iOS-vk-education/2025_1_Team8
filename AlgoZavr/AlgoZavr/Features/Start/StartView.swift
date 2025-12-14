@@ -44,5 +44,4 @@ struct StartView: View {
 
 #Preview {
     StartView()
-        .environmentObject(AppState())
 }

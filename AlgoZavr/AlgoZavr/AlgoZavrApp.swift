@@ -8,20 +8,22 @@
 import SwiftUI
 
 @main
-struct AlgorithmApp: App {
+struct AlgoZavrApp: App {
+    
     @StateObject private var appState = AppState()
 
     var body: some Scene {
         WindowGroup {
-            if appState.isAuthenticated {
-                MainTabView()
-                    .environmentObject(appState)
-            } else {
-                NavigationStack {
-                    StartView()
-                        .environmentObject(appState)
+            Group {
+                if appState.isAuthenticated {
+                    MainTabView()
+                } else {
+                    NavigationStack {
+                        StartView()
+                    }
                 }
             }
+            .environmentObject(appState)
         }
     }
 }

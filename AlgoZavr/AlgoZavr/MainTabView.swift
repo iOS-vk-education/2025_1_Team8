@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct MainTabView: View {
+    
+    @EnvironmentObject var appState: AppState
+    
     var body: some View {
         TabView {
             NavigationStack {
@@ -25,7 +28,7 @@ struct MainTabView: View {
             }
             
             NavigationStack {
-                ProgressView()
+                ProgressScreen()
             }
             .tabItem {
                 Label("Прогресс", systemImage: "chart.line.uptrend.xyaxis")
