@@ -8,8 +8,18 @@
 
 import Foundation
 
-struct User {
-    var login: String
+struct User: Identifiable {
+    let id = UUID()
+
     var username: String
-    var avatar: String = "Profile"
+    var login: String
+    var email: String
+    var password: String
+    
+    static let empty = User(
+            username: "",
+            login: "",
+            email: "",
+            password: ""
+        )
 }

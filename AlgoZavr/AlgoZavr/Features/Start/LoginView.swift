@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject var appState: AppState
-    @State private var login = ""
+    @State private var email = ""
     @State private var password = ""
 
     var body: some View {
@@ -22,15 +22,16 @@ struct LoginView: View {
                     .padding(.horizontal)
 
                 VStack(spacing: 16) {
-                    GlassField(text: $login, placeholder: "Логин")
+                    GlassField(text: $email, placeholder: "Имя пользователя")
                     GlassField(text: $password, placeholder: "Пароль", isSecure: true)
                 }
                 .padding(.horizontal)
 
                 Button {
-                    appState.login(login: login, username: "Name Surname")
+                    appState.isAuthenticated = true
                 } label: {
                     PrimaryButton(title: "Войти")
+                        .padding(.horizontal)
                 }
 
                 NavigationLink {
@@ -51,5 +52,4 @@ struct LoginView: View {
 
 #Preview {
     LoginView()
-        .environmentObject(AppState())
 }
