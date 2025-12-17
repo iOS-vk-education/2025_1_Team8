@@ -9,24 +9,52 @@
 import Foundation
 internal import Combine
 
+
 final class AppState: ObservableObject {
 
-    @Published var isAuthenticated: Bool = false
+    @Published var isAuthenticated = false
     @Published var user: User = .empty
 
-    func login(login: String, username: String) {
-        user = User(
-            username: username,
-            login: login,
-            email: "\(login)@mail.ru",
-            password: "123"
-        )
-        isAuthenticated = true
+    private let authService: AuthService = AuthServiceFirebase()
+
+    func login(login: String, password: String) {
+        Task {
+            do {
+                user = try await authService.signIn(
+                    login: login,
+                    password: password
+                )
+                isAuthenticated = true
+            } catch {
+                print("Login error:", error)
+            }
+        }
+    }
+
+    func register(
+        login: String,
+        username: String,
+        email: String,
+        password: String
+    ) {
+        Task {
+            do {
+                user = try await authService.signUp(
+                    login: login,
+                    username: username,
+                    email: email,
+                    password: password
+                )
+                isAuthenticated = true
+            } catch {
+                print("Register error:", error)
+            }
+        }
     }
 
     func logout() {
+        try? authService.signOut()
         user = .empty
         isAuthenticated = false
     }
 }
-

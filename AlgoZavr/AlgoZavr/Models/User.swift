@@ -9,17 +9,15 @@
 import Foundation
 
 struct User: Identifiable {
-    let id = UUID()
-
-    var username: String
+    var id: String
     var login: String
+    var username: String
     var email: String
-    var password: String
     
     static let empty = User(
-            username: "",
-            login: "",
-            email: "",
-            password: ""
-        )
+        id: "",
+        login: "",
+        username: "",
+        email: "",
+    )
 }

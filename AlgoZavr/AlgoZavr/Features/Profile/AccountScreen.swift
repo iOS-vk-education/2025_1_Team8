@@ -79,9 +79,9 @@ struct AccountScreen: View {
     private func saveChanges() {
         appState.user.login = newLogin
 
-        if !newPassword.isEmpty {
-            appState.user.password = newPassword
-        }
+//        if !newPassword.isEmpty {
+//            appState.user.password = newPassword
+//        }
 
         isEditing = false
     }
