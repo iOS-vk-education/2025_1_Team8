@@ -14,7 +14,7 @@ struct AccountScreen: View {
 
     @State private var isEditing = false
     @State private var newLogin = ""
-    @State private var newPassword = ""
+    @State private var newEmail = ""
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -41,11 +41,10 @@ struct AccountScreen: View {
                 )
 
                 row(
-                    title: "Пароль",
-                    value: "••••••••",
-                    text: $newPassword,
-                    isEditing: isEditing,
-                    isSecure: true
+                    title: "Почта",
+                    value: appState.user.email,
+                    text: $newEmail,
+                    isEditing: isEditing
                 )
             }
             .padding(16)
@@ -53,17 +52,7 @@ struct AccountScreen: View {
             .cornerRadius(16)
             .padding(.top, 16)
 
-            Button {
-                   // delete account
-               } label: {
-                   Text("Удалить аккаунт")
-                       .font(.system(size: 16))
-                       .foregroundColor(.red)
-               }
-               .padding(.top, 24)
-               .padding(.horizontal, 16)
-
-               Spacer()
+            Spacer()
         }
         .padding(.horizontal, 16)
         .background(Color(.systemGray6))
@@ -72,18 +61,22 @@ struct AccountScreen: View {
 
     private func startEditing() {
         newLogin = appState.user.login
-        newPassword = ""
+        newEmail = appState.user.email
         isEditing = true
     }
 
     private func saveChanges() {
-        appState.user.login = newLogin
+        Task {
+            if newLogin != appState.user.login {
+                await appState.updateLogin(newLogin)
+            }
 
-//        if !newPassword.isEmpty {
-//            appState.user.password = newPassword
-//        }
+            if newEmail != appState.user.email {
+                await appState.updateEmail(newEmail)
+            }
 
-        isEditing = false
+            isEditing = false
+        }
     }
 
     @ViewBuilder
@@ -91,8 +84,7 @@ struct AccountScreen: View {
         title: String,
         value: String,
         text: Binding<String>,
-        isEditing: Bool,
-        isSecure: Bool = false
+        isEditing: Bool
     ) -> some View {
         HStack {
             Text(title)
@@ -101,24 +93,12 @@ struct AccountScreen: View {
             Spacer()
 
             if isEditing {
-                if isSecure {
-                    SecureField("", text: text)
-                        .multilineTextAlignment(.trailing)
-                } else {
-                    TextField("", text: text)
-                        .multilineTextAlignment(.trailing)
-                }
+                TextField("", text: text)
+                    .multilineTextAlignment(.trailing)
+                    .keyboardType(title == "Почта" ? .emailAddress : .default)
             } else {
                 Text(value)
             }
-        }
-    }
-}
-
-struct AccountScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            AccountScreen()
         }
     }
 }

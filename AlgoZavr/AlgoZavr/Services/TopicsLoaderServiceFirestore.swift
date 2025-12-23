@@ -14,25 +14,57 @@ final class TopicsLoaderServiceFireStore: TopicsLoaderService {
     private let db = Firestore.firestore()
 
     func loadTopics() async throws -> [Topic] {
-        let snapshot = try await db
+        let topicsSnapshot = try await db
             .collection("topics")
             .getDocuments()
 
-        return snapshot.documents.compactMap { doc in
-            let data = doc.data()
+        var result: [Topic] = []
 
-            guard
-                let title = data["title"] as? String,
-                let algorithms = data["algorithms"] as? [String]
-            else {
-                return nil
+        for topicDoc in topicsSnapshot.documents {
+            let data = topicDoc.data()
+
+            guard let title = data["title"] as? String else {
+                continue
             }
 
-            return Topic(
-                id: doc.documentID,
-                title: title,
-                algorithms: algorithms
+            let algorithmsSnapshot = try await db
+                .collection("topics")
+                .document(topicDoc.documentID)
+                .collection("algorithms")
+                .getDocuments()
+
+            let algorithms: [Algorithm] = algorithmsSnapshot.documents.compactMap { algoDoc in
+                let data = algoDoc.data()
+
+                guard
+                    let title = data["title"] as? String,
+                    let description = data["description"] as? String,
+                    let implementation = data["implementation"] as? String,
+                    let difficulty = data["difficulty"] as? String,
+                    let topicId = data["topicId"] as? String
+                else {
+                    return nil
+                }
+
+                return Algorithm(
+                    id: algoDoc.documentID,
+                    topicId: topicId,
+                    title: title,
+                    description: description,
+                    implementation: implementation,
+                    difficulty: difficulty
+                )
+            }
+
+            result.append(
+                Topic(
+                    id: topicDoc.documentID,
+                    title: title,
+                    algorithms: algorithms
+                )
             )
         }
+
+        return result
     }
 }

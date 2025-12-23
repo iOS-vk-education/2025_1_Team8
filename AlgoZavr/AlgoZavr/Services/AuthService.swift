@@ -22,4 +22,24 @@ protocol AuthService {
     ) async throws -> User
 
     func signOut() throws
+    
+    func updateUsername(
+        userId: String,
+        username: String
+    ) async throws
+
+    func updateLogin(
+        userId: String,
+        login: String
+    ) async throws
+
+    func updateAvatar(
+        userId: String,
+        avatarData: Data
+    ) async throws
+    
+    func updateEmail(
+        userId: String,
+        email: String
+    ) async throws
 }

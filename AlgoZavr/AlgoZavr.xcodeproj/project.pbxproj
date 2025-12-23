@@ -16,9 +16,22 @@
 		B8BBEEF02EBA7B3100D8733F /* AlgoZavr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlgoZavr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B8DDE0142EFADF7000D6DF93 /* Exceptions for "AlgoZavr" folder in "AlgoZavr" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B8BBEEEF2EBA7B3100D8733F /* AlgoZavr */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B8BBEEF22EBA7B3100D8733F /* AlgoZavr */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B8DDE0142EFADF7000D6DF93 /* Exceptions for "AlgoZavr" folder in "AlgoZavr" target */,
+			);
 			path = AlgoZavr;
 			sourceTree = "<group>";
 		};
@@ -269,6 +282,7 @@
 				DEVELOPMENT_TEAM = 5DY9NZC28H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AlgoZavr/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -307,6 +321,7 @@
 				DEVELOPMENT_TEAM = 5DY9NZC28H;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = AlgoZavr/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

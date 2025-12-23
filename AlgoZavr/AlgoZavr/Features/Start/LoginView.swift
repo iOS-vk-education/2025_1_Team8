@@ -22,8 +22,8 @@ struct LoginView: View {
                     .padding(.horizontal)
 
                 VStack(spacing: 16) {
-                    GlassField(text: $login, placeholder: "Имя пользователя")
-                    GlassField(text: $password, placeholder: "Пароль", isSecure: true)
+                    GlassField(text: $login, placeholder: "Имя пользователя", type: .login)
+                    GlassField(text: $password, placeholder: "Пароль", type: .password)
                 }
                 .padding(.horizontal)
 
