@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RegisterView: View {
     @EnvironmentObject var appState: AppState
-    @State private var username = ""
+    @State private var login = ""
     @State private var email = ""
     @State private var password = ""
     @State private var repeatPassword = ""
@@ -24,15 +24,15 @@ struct RegisterView: View {
                     .padding(.horizontal)
 
                 VStack(spacing: 16) {
-                    GlassField(text: $username, placeholder: "Имя пользователя")
-                    GlassField(text: $email, placeholder: "Эл. почта")
-                    GlassField(text: $password, placeholder: "Пароль", isSecure: true)
-                    GlassField(text: $repeatPassword, placeholder: "Подтверждение пароля", isSecure: true)
+                    GlassField(text: $login, placeholder: "Логин", type: .login)
+                    GlassField(text: $email, placeholder: "Эл. почта", type: .email)
+                    GlassField(text: $password, placeholder: "Пароль", type: .password)
+                    GlassField(text: $repeatPassword, placeholder: "Подтверждение пароля", type: .password)
                 }
                 .padding(.horizontal)
 
                 Button {
-                    appState.isAuthenticated = true
+                    appState.register(login: login, username: "", email: email, password: password)
                 } label: {
                     PrimaryButton(title: "Зарегистрироваться")
                         .padding(.horizontal)

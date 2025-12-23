@@ -7,17 +7,25 @@
 
 import SwiftUI
 
+enum GlassFieldType {
+    case normal
+    case email
+    case login
+    case password
+}
+
 struct GlassField: View {
+
     @Binding var text: String
     let placeholder: String
-    var isSecure: Bool = false
+    let type: GlassFieldType
 
     @FocusState private var isFocused: Bool
     @State private var isPasswordVisible = false
 
     var body: some View {
         ZStack(alignment: .leading) {
-            
+
             if text.isEmpty && !isFocused {
                 Text(placeholder)
                     .foregroundColor(Color.black.opacity(0.4))
@@ -25,18 +33,21 @@ struct GlassField: View {
             }
 
             HStack {
-                
+
                 Group {
-                    if isSecure && !isPasswordVisible {
+                    if type == .password && !isPasswordVisible {
                         SecureField("", text: $text)
                     } else {
                         TextField("", text: $text)
                     }
                 }
                 .focused($isFocused)
+                .keyboardType(keyboardType)
+                .textInputAutocapitalization(autocapitalization)
+                .autocorrectionDisabled(disableAutocorrection)
                 .padding(.leading, 16)
-                
-                if isSecure {
+
+                if type == .password {
                     Button {
                         withAnimation(.easeInOut(duration: 0.15)) {
                             isPasswordVisible.toggle()
@@ -63,5 +74,34 @@ struct GlassField: View {
                 .stroke(Color.black.opacity(0.1))
         )
         .shadow(color: .black.opacity(0.05), radius: 3)
+    }
+
+    private var keyboardType: UIKeyboardType {
+        switch type {
+        case .email:
+            return .emailAddress
+        case .login:
+            return .asciiCapable
+        default:
+            return .default
+        }
+    }
+
+    private var autocapitalization: TextInputAutocapitalization {
+        switch type {
+        case .email, .login, .password:
+            return .never
+        default:
+            return .sentences
+        }
+    }
+
+    private var disableAutocorrection: Bool {
+        switch type {
+        case .email, .login, .password:
+            return true
+        default:
+            return false
+        }
     }
 }

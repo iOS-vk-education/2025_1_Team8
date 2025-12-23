@@ -12,13 +12,23 @@ struct MainTabView: View {
     @EnvironmentObject var appState: AppState
     
     var body: some View {
-        TabView {
-            NavigationStack {
+        TabView(selection: $appState.selectedTab) {
+            NavigationStack(path: $appState.homePath) {
                 HomeView()
+                    .navigationDestination(for: HomeRoute.self) { route in
+                            switch route {
+                            case .testRun(let settings):
+                                TestRunView(
+                                    userId: appState.user.id,
+                                    settings: settings
+                                )
+                            }
+                        }
             }
             .tabItem {
                 Label("Главная", systemImage: "house")
             }
+            .tag(Tab.home)
 
             NavigationStack {
                 TopicsListView()
@@ -26,6 +36,7 @@ struct MainTabView: View {
             .tabItem {
                 Label("Алгоритмы", systemImage: "book")
             }
+            .tag(Tab.algorithms)
             
             NavigationStack {
                 ProgressScreen()
@@ -33,6 +44,7 @@ struct MainTabView: View {
             .tabItem {
                 Label("Прогресс", systemImage: "chart.line.uptrend.xyaxis")
             }
+            .tag(Tab.progress)
 
             NavigationStack {
                 ProfileView()
@@ -40,6 +52,7 @@ struct MainTabView: View {
             .tabItem {
                 Label("Профиль", systemImage: "person")
             }
+            .tag(Tab.profile)
         }
     }
 }

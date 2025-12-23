@@ -24,7 +24,6 @@ struct ProfileView: View {
 
                 VStack(spacing: 12) {
 
-                    // MARK: Аватар
                     PhotosPicker(selection: $selectedPhoto, matching: .images) {
                         avatarImage
                             .resizable()
@@ -35,7 +34,6 @@ struct ProfileView: View {
 
                     VStack(spacing: 5) {
 
-                        // MARK: Имя + карандаш
                         HStack(spacing: 15) {
 
                             ZStack {
@@ -66,7 +64,6 @@ struct ProfileView: View {
                                     .offset(x: -6)
                             }
                         }
-                        
 
                         Text(appState.user.login)
                             .font(.system(size: 14))
@@ -90,7 +87,7 @@ struct ProfileView: View {
                     Divider()
 
                     NavigationLink {
-                        Text("Уведомления")
+                        NotificationsScreen()
                     } label: {
                         ProfileRow(title: "Уведомления")
                             .foregroundColor(.black)
@@ -99,9 +96,10 @@ struct ProfileView: View {
                     Divider()
 
                     NavigationLink {
-                        Text("Настройки")
+                        AboutAppViewControllerWrapper()
+                            .background(Color(.systemGray6))
                     } label: {
-                        ProfileRow(title: "Настройки")
+                        ProfileRow(title: "О приложении")
                             .foregroundColor(.black)
                     }
                 }
@@ -109,10 +107,10 @@ struct ProfileView: View {
                 .cornerRadius(16)
 
                 Button {
-                    // logout
+                    appState.logout()
                 } label: {
                     Text("Выйти из аккаунта")
-                        .font(.system(size: 16, weight: .medium))
+                        .font(.system(size: 18, weight: .medium))
                         .foregroundColor(.red)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
@@ -125,6 +123,9 @@ struct ProfileView: View {
         }
         .background(Color(.systemGray6).ignoresSafeArea())
         .navigationTitle("Профиль")
+        .onAppear {
+            loadAvatarFromUser()
+        }
         .onChange(of: selectedPhoto) { newItem in
             loadAvatar(from: newItem)
         }
@@ -140,21 +141,37 @@ struct ProfileView: View {
     private func finishEditing() {
         isEditingName = false
         nameFieldFocused = false
+
+        Task {
+            await appState.updateUsername(appState.user.username)
+        }
+    }
+
+    private func loadAvatarFromUser() {
+        guard
+            let data = appState.user.avatar,
+            let uiImage = UIImage(data: data)
+        else { return }
+
+        avatarImage = Image(uiImage: uiImage)
     }
 
     private func loadAvatar(from item: PhotosPickerItem?) {
         guard let item else { return }
 
         Task {
-            if let data = try? await item.loadTransferable(type: Data.self),
-               let uiImage = UIImage(data: data) {
-                avatarImage = Image(uiImage: uiImage)
-            }
+            guard
+                let originalData = try? await item.loadTransferable(type: Data.self),
+                let uiImage = UIImage(data: originalData),
+                let compressedData = uiImage.jpegData(compressionQuality: 0.3),
+                compressedData.count < 1_000_000
+            else { return }
+
+            avatarImage = Image(uiImage: uiImage)
+            await appState.updateAvatar(compressedData)
         }
     }
 }
-
-
 
 struct ProfileRow: View {
 
@@ -163,7 +180,7 @@ struct ProfileRow: View {
     var body: some View {
         HStack {
             Text(title)
-                .font(.system(size: 16))
+                .font(.system(size: 18))
 
             Spacer()
 
@@ -173,14 +190,5 @@ struct ProfileRow: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
-    }
-}
-
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            ProfileView()
-            
-        }
     }
 }

@@ -5,21 +5,24 @@
 //  Created by Никита Поскрёбышев on 03.12.2025.
 //
 
-
 import Foundation
 
-struct User: Identifiable {
-    let id = UUID()
-
-    var username: String
+struct User: Identifiable, Codable {
+    let id: String
     var login: String
+    var username: String
     var email: String
-    var password: String
+    var energy: Int
+    var XP: Int
+    var avatar: Data?
     
     static let empty = User(
-            username: "",
-            login: "",
-            email: "",
-            password: ""
-        )
+        id: "",
+        login: "",
+        username: "",
+        email: "",
+        energy: 5,
+        XP: 0,
+        avatar: nil
+    )
 }

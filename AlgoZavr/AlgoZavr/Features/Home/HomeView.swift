@@ -9,21 +9,24 @@ import SwiftUI
 
 struct HomeView: View {
 
-    @StateObject var viewModel = HomeViewModel()
+    @StateObject private var viewModel = HomeViewModel()
+    @EnvironmentObject private var appState: AppState
 
     var body: some View {
         VStack(alignment: .leading, spacing: 40) {
 
-            VStack(alignment: .leading, spacing: 15) {
+            VStack(spacing: 15) {
 
                 LevelCardView(
-                    level: viewModel.currentLevel,
-                    currentXP: viewModel.currentXP,
-                    totalXP: viewModel.xpToNextLevel
+                    level: appState.user.XP / 100 + 1,
+                    currentXP: appState.user.XP,
+                    energy: appState.user.energy
                 )
 
-                NavigationLink {
-                    // Экран продолжения обучения
+                Button {
+                    guard let nav = viewModel.activeNav else { return }
+                    appState.selectedTab = .algorithms
+                    appState.openAlgorithmNav = nav
                 } label: {
                     ContinueLearningCard(
                         category: viewModel.lastCategory,
@@ -32,7 +35,7 @@ struct HomeView: View {
                     )
                 }
                 .buttonStyle(.plain)
-
+                .disabled(viewModel.lastAlgorithm == "Нет активных алгоритмов")
             }
             .padding(.horizontal)
 
@@ -57,26 +60,34 @@ struct HomeView: View {
         }
         .background(Color(.systemGray6).ignoresSafeArea())
         .navigationTitle("Главная")
+        .onAppear {
+            Task {
+                await viewModel.reloadActiveAlgorithm(userId: appState.user.id)
+            }
+        }
     }
 }
+
 
 struct LevelCardView: View {
 
     let level: Int
     let currentXP: Int
-    let totalXP: Int
+    let energy: Int
+    
+    let maxEnergy: Int = 5
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
 
             HStack {
                 HStack(spacing: 2) {
-                    ForEach(0..<level, id: \.self) { _ in
+                    ForEach(0..<min(energy, maxEnergy), id: \.self) { _ in
                         Image(systemName: "bolt.fill")
                             .foregroundColor(.yellow)
                             .font(.system(size: 20))
                     }
-                    ForEach(0..<max(0, 5 - level), id: \.self) { _ in
+                    ForEach(0..<5 - min(energy, maxEnergy), id: \.self) { _ in
                         Image(systemName: "bolt")
                             .foregroundColor(.yellow)
                             .font(.system(size: 20))
@@ -90,16 +101,16 @@ struct LevelCardView: View {
 
             VStack(spacing: 12) {
 
-                Text("\(currentXP)/\(totalXP) XP")
+                Text("\(currentXP % 100)/100 XP")
                     .font(.system(size: 16, weight: .semibold))
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                ProgressView(value: Double(currentXP), total: Double(totalXP))
+                ProgressView(value: Double(currentXP % 100), total: Double(100))
                     .progressViewStyle(.linear)
                     .tint(.blue)
                     .scaleEffect(x: 1, y: 1.5, anchor: .center)
 
-                Text("До следующего уровня: \(totalXP - currentXP) XP")
+                Text("До следующего уровня: \(100 - currentXP % 100) XP")
                     .font(.system(size: 14))
                     .foregroundColor(.gray)
                     .frame(maxWidth: .infinity, alignment: .center)
